@@ -1,6 +1,9 @@
-int red_one, red_two = 13, 10;
-int green_one, green_two = 12, 9;
-int blue_one, blue_two = 11, 8;
+int red_one = 13; 
+int red_two = 10;
+int green_one = 12; 
+int green_two = 9;
+int blue_one = 11; 
+int blue_two = 8;
 
 int color[3][3] = {{255, 0, 0}, {0, 255, 0}, {0, 0, 255}}; //[0-2][0-2] r, g, b
 int check[2][3] = {{45, 30, 15}, {30, 50, 60 }}; //[0][0-2] temperature hi lo, [1][0-2] humid lo hi
@@ -9,19 +12,19 @@ float temp, humid;
 
 void setup()
 {
-  pinMode(red1, OUTPUT);
-  pinMode(green1, OUTPUT);
-  pinMode(blue1, OUTPUT);
+  pinMode(red_one, OUTPUT);
+  pinMode(green_one, OUTPUT);
+  pinMode(blue_one, OUTPUT);
 
-  pinMode(red2, OUTPUT);
-  pinMode(green2, OUTPUT);
-  pinMode(blue2, OUTPUT);
+  pinMode(red_two, OUTPUT);
+  pinMode(green_two, OUTPUT);
+  pinMode(blue_two, OUTPUT);
 }
 
 void loop()
 {
   RGB_color(1, calcR(true, temp, false, humid), calcG(true, temp, false, humid), calcB(true, temp, false, humid));
-  RGB_color(2, calcR(false, temp, true, humid), calcG(false, temp, true, huimd), calcB(false, temp, true, humid);
+  RGB_color(2, calcR(false, temp, true, humid), calcG(false, temp, true, humid), calcB(false, temp, true, humid));
   delay(1000); 
 }
 
@@ -42,7 +45,7 @@ void RGB_color(int sensor, int red, int green, int blue)
   }
 }
 
-static int calcR(tempC, temp, humidC, humid)
+static int calcR(bool tempC, float temp, bool humidC, float humid)
 {
   float red;
 
@@ -65,12 +68,12 @@ static int calcR(tempC, temp, humidC, humid)
   
     else
     {
-      if (temp > check[0][1]) and (temp < check[0][0])
+      if (temp > check[0][1]) && (temp < check[0][0])
       {
         red = (temp-check[0][1])/((check[0][0]-check[0][1])*(color[0][0]-color[0][1]+color[0][1]));
       }
 
-      else if (temp > check[0][2]) and (temp < check[0][1])
+      else if (temp > check[0][2]) && (temp < check[0][1])
       {
         red = (temp-check[0][2])/((check[0][1]-check[0][2])*(color[0][1]-color[0][2]+color[0][2]));
       }
@@ -100,12 +103,12 @@ static int calcR(tempC, temp, humidC, humid)
   
     else
     {
-      if (humid > check[1][1]) and (humid < check[1][0])
+      if (humid > check[1][1]) && (humid < check[1][0])
       {
         red = (humid-check[1][1])/((check[1][0]-check[1][1])*(color[0][0]-color[0][1]+color[0][1]));
       }
 
-      else if (humid > check[1][2]) and (humid < check[1][1])
+      else if (humid > check[1][2]) && (humid < check[1][1])
       {
         red = (humid-check[1][2])/((check[1][1]-check[1][2])*(color[0][1]-color[0][2]+color[0][2]));
       }
@@ -117,7 +120,7 @@ static int calcR(tempC, temp, humidC, humid)
   }
 }
 
-static int calcG(tempC, temp, humidC, humid)
+static int calcG(bool tempC, float temp, bool humidC, float humid)
 {
   float green;
 
@@ -140,12 +143,12 @@ static int calcG(tempC, temp, humidC, humid)
   
     else
     {
-      if (temp > check[0][1]) and (temp < check[0][0])
+      if (temp > check[0][1]) && (temp < check[0][0])
       {
         green = (temp-check[0][1])/((check[0][0]-check[0][1])*(color[1][0]-color[1][1]+color[1][1]));
       }
 
-      else if (temp > check[0][2]) and (temp < check[0][1])
+      else if (temp > check[0][2]) && (temp < check[0][1])
       {
         green = (temp-check[0][2])/((check[0][1]-check[0][2])*(color[1][1]-color[1][2]+color[1][2]));
       }
@@ -175,12 +178,12 @@ static int calcG(tempC, temp, humidC, humid)
   
     else
     {
-      if (humid > check[1][1]) and (humid < check[1][0])
+      if (humid > check[1][1]) && (humid < check[1][0])
       {
         green = (humid-check[1][1])/((check[1][0]-check[1][1])*(color[1][0]-color[1][1]+color[1][1]));
       }
 
-      else if (humid > check[1][2]) and (humid < check[1][1])
+      else if (humid > check[1][2]) && (humid < check[1][1])
       {
         green = (humid-check[1][2])/((check[1][1]-check[1][2])*(color[1][1]-color[1][2]+color[1][2]));
       }
@@ -192,7 +195,7 @@ static int calcG(tempC, temp, humidC, humid)
   }
 }
 
-static int calcB(tempC, temp, humidC, humid)
+static int calcB(bool tempC, float temp, bool humidC, float humid)
 {
   float blue;
 
@@ -250,12 +253,12 @@ static int calcB(tempC, temp, humidC, humid)
   
     else
     {
-      if (humid > check[1][1]) and (humid < check[1][0])
+      if (humid > check[1][1]) && (humid < check[1][0])
       {
         blue = (humid-check[1][1])/((check[1][0]-check[1][1])*(color[2][0]-color[2][1]+color[2][1]));
       }
 
-      else if (humid > check[1][2]) and (humid < check[1][1])
+      else if (humid > check[1][2]) && (humid < check[1][1])
       {
         blue = (humid-check[1][2])/((check[1][1]-check[1][2])*(color[2][1]-color[2][2]+color[2][2]));
       }
