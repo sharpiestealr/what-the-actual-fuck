@@ -6,7 +6,7 @@
 //declarar lcd
 LiquidCrystal_I2C lcd(0x27,16,2);
 DHT dht(2,DHT22);
-Adafruit_BMP280 bmp; // Declara objeto do tipo BMP
+Adafruit_BMP280 bmp;
 
 byte degree[8] = { 
   B00111,
