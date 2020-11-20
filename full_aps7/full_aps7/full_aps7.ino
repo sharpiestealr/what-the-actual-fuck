@@ -59,7 +59,7 @@ void setup()
   pinMode(blue_two, OUTPUT);
 
   //setup da lcd
-  lcd.begin(); //starts up screen
+  lcd.init(); //starts up screen
   lcd.backlight();
   lcd.setCursor(0, 0); 
   lcd.print("Insper 2020/2"); 
