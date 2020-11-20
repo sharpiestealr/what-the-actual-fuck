@@ -39,7 +39,7 @@ int blue_one = 11;
 int blue_two = 8;
 
 int color[3][3] = {{255, 0, 0}, {0, 255, 0}, {0, 0, 255}}; //[0-2][0-2] r, g, b
-int check[2][3] = {{45, 30, 15}, {30, 50, 60 }}; //[0][0-2] temperature hi lo, [1][0-2] humid lo hi
+int check[2][3] = {{45, 30, 15}, {30, 50, 60}}; //[0][0-2] temperature hi lo, [1][0-2] humid lo hi
 
 void setup() 
 {
@@ -54,14 +54,13 @@ void setup()
   pinMode(red_one, OUTPUT);
   pinMode(green_one, OUTPUT);
   pinMode(blue_one, OUTPUT);
-
   pinMode(red_two, OUTPUT);
   pinMode(green_two, OUTPUT);
   pinMode(blue_two, OUTPUT);
 
   //setup da lcd
-  lcd.init(); //starts up screen
-  lcd.backlight(); //turns on backlight 
+  lcd.begin(); //starts up screen
+  lcd.backlight();
   lcd.setCursor(0, 0); 
   lcd.print("Insper 2020/2"); 
   delay(2000); //printed message 
@@ -98,20 +97,16 @@ void setup()
    
 }
 
-float calibra_DHT() //fix this
+static float calibra_DHT(float humid) //fix this
 {
-  float umidade = map(analogRead(A2), 0, 1023, 0, 999); 
-  umidade -= 20 + random(41);//Incerteza
-  umidade = umidade / 10.0;
-  umidade = 0.929151 * umidade + 2.4891;// Calibração 
-  return umidade;
+  humid = 0.980815 * humid + 2.584577;// Calibração 
+  return humid;
 }
 
-float calibra_TMP()//fix this
+static float calibra_TMP(float tensao)
 {
-  float temperatura = map(analogRead(A3), 0, 1023, -400, 800);//gets temperature
-  temperatura -= 5 + random(11);//adjusting for uncertainties
-  return temperatura / 10.0;//return corrected temperature
+  float temperatura = 0.009787*tensao - 0.0025;//
+  return temperatura;//
 }
 
 void RGB_color(int sensor, int red, int green, int blue)
@@ -361,10 +356,10 @@ void loop()
   //Temp
   bin = analogRead(A0);
   tensao = (bin/1023.0)*1.1;
-  temp = calibra_TMP();
+  temp = calibra_TMP(tensao);
   
   //Umid
-  umid = calibra_DHT();
+  umid = calibra_DHT(analogRead(A2));
   
   //Pressão
   pressure = bmp.readPressure();
@@ -389,8 +384,8 @@ void loop()
   Serial.print("\nPressão [hPa]: "); 
   Serial.print(pressure/100); 
 
-  RGB_color(1, calcR(true, temp, false, humid), calcG(true, temp, false, humid), calcB(true, temp, false, humid));
-  RGB_color(2, calcR(false, temp, true, humid), calcG(false, temp, true, humid), calcB(false, temp, true, humid));
+  RGB_color(1, calcR(true, temp, false, umid), calcG(true, temp, false, umid), calcB(true, temp, false, umid));
+  RGB_color(2, calcR(false, temp, true, umid), calcG(false, temp, true, umid), calcB(false, temp, true, umid));
   
   lcd.clear(); 
   lcd.setCursor(0, 0); 
@@ -414,14 +409,14 @@ void loop()
   lcd.write(byte(0));
   lcd.write("C]:"); 
   lcd.setCursor(0,1);
-  lcd.print(tmp);//prints temperature to lcd screen 
+  lcd.print(temp);//prints temperature to lcd screen 
   delay(2000);
   lcd.clear(); 
   lcd.setCursor(0, 0);
    
   lcd.print("Humidity [%]:"); 
   lcd.setCursor(0,1);
-  lcd.print(humid);//prints humidity to lcd screen 
+  lcd.print(umid);//prints humidity to lcd screen 
   delay(2000);//offsets the info update 
   lcd.clear();
   
