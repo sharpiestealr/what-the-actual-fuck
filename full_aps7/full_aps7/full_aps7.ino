@@ -100,14 +100,15 @@ void setup()
 static float calibra_DHT(float humid) //fix this
 {
   humid = 0.995595 * humid + 2.128255;// Calibração 
-  humid = humid/100;
+  humid = humid * 19.5;
   return humid;
 }
 
-static float calibra_TMP(float tensao)
+static float calibra_LM(float tensao)
 {
-  float temperatura = 0.009844*tensao - 0.01471;//
-  temperatura = temperatura*1000;
+  float temperatura = temperatura*1000;
+  temperatura = 0.9762*tensao - 0.0103;//
+  temperatura = temperatura *100;
   return temperatura;
 }
 
@@ -358,16 +359,16 @@ void loop()
   //Temp
   bin = analogRead(A0);
   tensao = (bin/1023.0)*1.1;
-  temp = calibra_TMP(tensao);
+  temp = calibra_LM(tensao);
   
   //Umid
-  umid = calibra_DHT(analogRead(A2));
+  umid = calibra_DHT(digitalRead(2));
   
   //Pressão
   pressure = bmp.readPressure();
   
-  //Lum
-  res = tensao*100000.0/(5.0-tensao);      // Calc. resist. 
+  //Lum fix this
+  res = (analogRead(A1))*100.0/(5.0-tensao);      // Calc. resist. 
   lum = pow(10,6.5-1.25*log10(res));       // Calc. lumnos. 
 
   //serial printing for checking & calibration
@@ -375,7 +376,7 @@ void loop()
   Serial.print(bin);
   Serial.print("\nTensão [v]: ");
   Serial.print(tensao);
-  Serial.print("\nResistência [kΩ]: "); 
+  Serial.print("\nResistência [Ω]: "); 
   Serial.print(res/1000); 
   Serial.print("\nLuminosidade [Lux]: "); 
   Serial.print(lum); 
@@ -393,7 +394,7 @@ void loop()
    
   lcd.setCursor(0, 0); 
   lcd.print("Resistance"); 
-  lcd.print("[k");
+  lcd.print("[");
   lcd.write(byte(1));
   lcd.write("]:"); 
   lcd.setCursor(0,1);
