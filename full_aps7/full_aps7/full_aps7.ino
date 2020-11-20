@@ -99,14 +99,14 @@ void setup()
 
 static float calibra_DHT(float humid) //fix this
 {
-  humid = 0.980815 * humid + 2.584577;// Calibração 
+  humid = 0.995595 * humid + 2.128255;// Calibração 
   humid = humid/100;
   return humid;
 }
 
 static float calibra_TMP(float tensao)
 {
-  float temperatura = 0.009787*tensao - 0.0025;//
+  float temperatura = 0.009844*tensao - 0.01471;//
   temperatura = temperatura*1000;
   return temperatura;
 }
