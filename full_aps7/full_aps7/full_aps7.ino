@@ -31,12 +31,13 @@ byte ohm[8] = {
 int bin;
 float tensao, temp, res, lum, umid, pressure;
 
-int red_one = 13; 
-int red_two = 10;
-int green_one = 12; 
-int green_two = 9;
-int blue_one = 11; 
-int blue_two = 8;
+//do only the ~
+int red_one = 11; 
+int red_two = 6;
+int green_one = 10; 
+int green_two = 5;
+int blue_one = 9; 
+int blue_two = 3;
 
 int color[3][3] = {{255, 0, 0}, {0, 255, 0}, {0, 0, 255}}; //[0-2][0-2] r, g, b
 int check[2][3] = {{45, 30, 15}, {30, 50, 60}}; //[0][0-2] temperature hi lo, [1][0-2] humid lo hi
@@ -46,8 +47,6 @@ void setup()
   Serial.begin(9600);
   analogReference(INTERNAL);  //Temp
   
-  lcd.createChar(0, degree); 
-  lcd.createChar(1, ohm);
   dht.begin();  //Umid
   bmp.begin(0x76);  //Pressão
   
@@ -94,6 +93,9 @@ void setup()
   lcd.print("Souza"); 
   delay(2000);//printed message 
   lcd.clear();
+
+  lcd.createChar(0, degree); 
+  lcd.createChar(1, ohm);
    
 }
 
@@ -371,22 +373,6 @@ void loop()
   res = (analogRead(A1))*100.0/(5.0-tensao);      // Calc. resist. 
   lum = pow(10,6.5-1.25*log10(res));       // Calc. lumnos. 
 
-  //serial printing for checking & calibration
-  Serial.print("\n\nDado: ");
-  Serial.print(bin);
-  Serial.print("\nTensão [v]: ");
-  Serial.print(tensao);
-  Serial.print("\nResistência [Ω]: "); 
-  Serial.print(res/1000); 
-  Serial.print("\nLuminosidade [Lux]: "); 
-  Serial.print(lum); 
-  Serial.print("\nTemperatura [ºC]: ");
-  Serial.print(temp);
-  Serial.print("\nUmidade[%] ");
-  Serial.print(umid);
-  Serial.print("\nPressão [hPa]: "); 
-  Serial.print(pressure/100); 
-
   RGB_color(1, calcR(true, temp, false, umid), calcG(true, temp, false, umid), calcB(true, temp, false, umid));
   RGB_color(2, calcR(false, temp, true, umid), calcG(false, temp, true, umid), calcB(false, temp, true, umid));
   
@@ -394,7 +380,7 @@ void loop()
    
   lcd.setCursor(0, 0); 
   lcd.print("Resistance"); 
-  lcd.print("[");
+  lcd.write("[");
   lcd.write(byte(1));
   lcd.write("]:"); 
   lcd.setCursor(0,1);
@@ -410,7 +396,7 @@ void loop()
   
   lcd.clear(); 
   lcd.setCursor(0, 0); 
-  lcd.print("Temperature"); 
+  lcd.write("Temperature"); 
   lcd.write("[");
   lcd.write(byte(0));
   lcd.write("C]:"); 
