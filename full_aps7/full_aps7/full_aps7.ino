@@ -16,7 +16,7 @@ byte degree[8] = {
   B00000, 
   B00000, 
   B00000, 
-  B00000,};
+  B00000};
 
 byte ohm[8] = { 
   B01110, 
@@ -25,8 +25,8 @@ byte ohm[8] = {
   B10001, 
   B01010, 
   B01010, 
-  B01010, 
-  B00000,};
+  B11011, 
+  B00000};
 
 int bin;
 float tensao, temp, res, lum, umid, pressure;
@@ -100,12 +100,14 @@ void setup()
 static float calibra_DHT(float humid) //fix this
 {
   humid = 0.980815 * humid + 2.584577;// Calibração 
+  humid = humid/100;
   return humid;
 }
 
 static float calibra_TMP(float tensao)
 {
   float temperatura = 0.009787*tensao - 0.0025;//
+  temperatura = temperatura*1000;
   return temperatura;//
 }
 
@@ -392,7 +394,7 @@ void loop()
   lcd.print("Resistance"); 
   lcd.print("[k");
   lcd.write(byte(1));
-  lcd.print("]:"); 
+  lcd.write("]:"); 
   lcd.setCursor(0,1);
   lcd.print(res);//prints resistance to lcd screen 
   delay(2000);
@@ -405,7 +407,7 @@ void loop()
   lcd.clear(); 
   lcd.setCursor(0, 0); 
   lcd.print("Temperature"); 
-  lcd.print("[");
+  lcd.write("[");
   lcd.write(byte(0));
   lcd.write("C]:"); 
   lcd.setCursor(0,1);
@@ -413,7 +415,6 @@ void loop()
   delay(2000);
   lcd.clear(); 
   lcd.setCursor(0, 0);
-   
   lcd.print("Humidity [%]:"); 
   lcd.setCursor(0,1);
   lcd.print(umid);//prints humidity to lcd screen 
