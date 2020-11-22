@@ -45,8 +45,8 @@ int blue_one = 9;
 int blue_two = 3;
 
 //listas com os valores de escalas (temperatura, umidade e cores) dos leds
-int color[3][3] = {{255, 100, 0}, {100, 255, 100}, {0, 100, 255}}; //[0-2][0-2] r, g, b
-int check[2][3] = {{45, 30, 15}, {30, 60, 75}}; //[0][0-2] temperature hi lo, [1][0-2] humid lo hi
+int color[3][3] = {{255, 150, 0}, {150, 255, 150}, {0, 150, 255}}; //[0-2][0-2] r, g, b
+int check[2][3] = {{45, 30, 15}, {40, 60, 80}}; //[0][0-2] temperature hi lo, [1][0-2] humid lo hi
 
 void setup() 
 {
@@ -68,6 +68,7 @@ void setup()
   //setup da lcd
   lcd.init(); //acendendo a tela
   lcd.backlight(); //ligando a luz de fundo
+  lcd.clear(); //limpando a tela
   //criação dos caracteres especiais
   lcd.createChar(0, degree); 
   lcd.createChar(1, ohm);
@@ -141,7 +142,7 @@ void RGB_color(int sensor, int red, int green, int blue) //método que pinta os 
   }
 }
 
-static int calcR(bool tempC, float temp, bool humidC, float humid) //método que calcula o número para mandar para o pino vermelho
+static int calcR(bool tempC, float temp, bool humidC, float humid)
 {
   float red;
 
@@ -154,69 +155,69 @@ static int calcR(bool tempC, float temp, bool humidC, float humid) //método que
   
     else if (temp == check[0][1])
     {
-      red = color[0][1];
+      red = 0;
     }
 
     else if (temp <= check[0][2])
     {
-      red = color[0][2];
+      red = 0;
     }
   
     else
     {
       if ((temp > check[0][1]) && (temp < check[0][0]))
       {
-        red = (temp-check[0][1])/((check[0][0]-check[0][1])*(color[0][0]-color[0][1]));
+        red = ((temp- check[0][1])/(check[0][0]- check[0][1]))*color[0][1];
       }
 
       else if ((temp > check[0][2]) && (temp < check[0][1]))
       {
-        red = (temp-check[0][2])/((check[0][1]-check[0][2])*(color[0][1]-color[0][2]));
+        red = ((temp- check[0][2])/(check[0][1]- check[0][2]))*color[0][2];
       }
     }
 
-    int redT_int = floor(red);
+    int redF = floor(red);
 
-    return redT_int;
+    return redF;
   }
 
-  else if (humid == true)
+  else if (humidC == true)
   {
-    if (humid >= check[1][0])
+    if (humid <= check[1][0])
     {
       red = color[0][0];
     }
   
     else if (humid == check[1][1])
     {
-      red = color[0][1];
+      red = 0;
     }
 
-    else if (humid <= check[1][2])
+    else if (humid >= check[1][2])
     {
-      red = color[0][2];
+      red = 0;
     }
   
     else
     {
-      if ((humid > check[1][1]) && (humid < check[1][0]))
+      if ((humid < check[1][1]) && (humid > check[1][0]))
       {
-        red = (humid-check[1][1])/((check[1][0]-check[1][1])*(color[0][0]-color[0][1]));
+        red = ((humid- check[1][1])/(check[1][0]- check[1][1]))*color[0][1];
       }
 
-      else if ((humid > check[1][2]) && (humid < check[1][1]))
+      else if ((humid < check[1][2]) && (humid > check[1][1]))
       {
-        red = (humid-check[1][2])/((check[1][1]-check[1][2])*(color[0][1]-color[0][2]));
+        red = ((humid- check[1][2])/(check[1][1]- check[1][2]))*color[0][2];
       }
     }
 
-    int redH_int = floor(red);
+    int redF = floor(red);
 
-    return redH_int;
+    return redF;
   }
 }
 
-static int calcG(bool tempC, float temp, bool humidC, float humid) //método que calcula o número para mandar para o pino verde
+static int calcG(bool tempC, float temp, bool humidC, float humid)
 {
   float green;
 
@@ -224,7 +225,7 @@ static int calcG(bool tempC, float temp, bool humidC, float humid) //método que
   {
     if (temp >= check[0][0])
     {
-      green = color[1][0];
+      green = 0;
     }
   
     else if (temp == check[0][1])
@@ -234,32 +235,32 @@ static int calcG(bool tempC, float temp, bool humidC, float humid) //método que
 
     else if (temp <= check[0][2])
     {
-      green = color[1][2];
+      green = 0;
     }
   
     else
     {
       if ((temp > check[0][1]) && (temp < check[0][0]))
       {
-        green = (temp-check[0][1])/((check[0][0]-check[0][1])*(color[1][0]-color[1][1]));
+        green = ((temp- check[0][1])/(check[0][0]- check[0][1]))*color[1][0];
       }
 
       else if ((temp > check[0][2]) && (temp < check[0][1]))
       {
-        green = (temp-check[0][2])/((check[0][1]-check[0][2])*(color[1][1]-color[1][2]));
+        green = ((temp- check[0][2])/(check[0][1]- check[0][2]))*color[1][2];
       }
     }
 
-    int greenT_int = floor(green);
+    int greenF = floor(green);
 
-    return greenT_int;
+    return greenF;
   }
 
-  else if (humid == true)
+  else if (humidC == true)
   {
-    if (humid >= check[1][0])
+    if (humid <= check[1][0])
     {
-      green = color[1][0];
+      green = 0;
     }
   
     else if (humid == check[1][1])
@@ -267,31 +268,31 @@ static int calcG(bool tempC, float temp, bool humidC, float humid) //método que
       green = color[1][1];
     }
 
-    else if (humid <= check[1][2])
+    else if (humid >= check[1][2])
     {
-      green = color[1][2];
+      green = 0;
     }
   
     else
     {
-      if ((humid > check[1][1]) && (humid < check[1][0]))
+      if ((humid < check[1][1]) && (humid > check[1][0]))
       {
-        green = (humid-check[1][1])/((check[1][0]-check[1][1])*(color[1][0]-color[1][1]));
+        green = ((humid- check[1][1])/(check[1][0]- check[1][1]))*color[1][0];
       }
 
-      else if ((humid > check[1][2]) && (humid < check[1][1]))
+      else if ((humid < check[1][2]) && (humid > check[1][1]))
       {
-        green = (humid-check[1][2])/((check[1][1]-check[1][2])*(color[1][1]-color[1][2]));
+        green = ((humid- check[1][2])/(check[1][1]- check[1][2]))*color[1][2];
       }
     }
 
-    int greenH_int = floor(green);
+    int greenF = floor(green);
 
-    return greenH_int;
+    return greenF;
   }
 }
 
-static int calcB(bool tempC, float temp, bool humidC, float humid) //método que calcula o número para mandar para o pino azul
+static int calcB(bool tempC, float temp, bool humidC, float humid)
 {
   float blue;
 
@@ -299,12 +300,12 @@ static int calcB(bool tempC, float temp, bool humidC, float humid) //método que
   {
     if (temp >= check[0][0])
     {
-      blue = color[2][0];
+      blue = 0;
     }
   
     else if (temp == check[0][1])
     {
-      blue = color[2][1];
+      blue = 0;
     }
 
     else if (temp <= check[0][2])
@@ -316,53 +317,53 @@ static int calcB(bool tempC, float temp, bool humidC, float humid) //método que
     {
       if ((temp > check[0][1]) && (temp < check[0][0]))
       {
-        blue = (temp-check[0][1])/((check[0][0]-check[0][1])*(color[2][0]-color[2][1]));
+        blue = ((temp- check[0][1])/(check[0][0]- check[0][1]))*color[2][0];
       }
 
       else if ((temp > check[0][2]) && (temp < check[0][1]))
       {
-        blue = (temp-check[0][2])/((check[0][1]-check[0][2])*(color[2][1]-color[2][2]));
+        blue = ((temp- check[0][2])/(check[0][1]- check[0][2]))*color[2][1];
       }
     }
 
-    int blueT_int = floor(blue);
+    int blueF = floor(blue);
 
-    return blueT_int;
+    return blueF;
   }
 
-  else if (humid == true)
+  else if (humidC == true)
   {
-    if (humid >= check[1][0])
+    if (humid <= check[1][0])
     {
-      blue = color[2][0];
+      blue = 0;
     }
   
     else if (humid == check[1][1])
     {
-      blue = color[2][1];
+      blue = 0;
     }
 
-    else if (humid <= check[1][2])
+    else if (humid >= check[1][2])
     {
       blue = color[2][2];
     }
   
     else
     {
-      if ((humid > check[1][1]) && (humid < check[1][0]))
+      if ((humid < check[1][1]) && (humid > check[1][0]))
       {
-        blue = (humid-check[1][1])/((check[1][0]-check[1][1])*(color[2][0]-color[2][1]));
+        blue = ((humid- check[1][1])/(check[1][0]- check[1][1]))*color[2][0];
       }
 
-      else if ((humid > check[1][2]) && (humid < check[1][1]))
+      else if ((humid < check[1][2]) && (humid > check[1][1]))
       {
-        blue = (humid-check[1][2])/((check[1][1]-check[1][2])*(color[2][1]-color[2][2]));
+        blue = ((humid- check[1][2])/(check[1][1]- check[1][2]))*color[2][1];
       }
     }
 
-    int blueH_int = floor(blue);
+    int blueF = floor(blue);
 
-    return blueH_int;
+    return blueF;
   }
 }
 
