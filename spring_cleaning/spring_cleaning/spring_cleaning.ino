@@ -294,26 +294,8 @@ static int calcB(bool tempC, float temp, bool humidC, float humid)
 
 void loop() 
 {
-  //temp = calibra_LM();
-  //humid = calibra_DHT();
-
-  if (humid < 85)
-  {
-    humid +=1;
-  }
-  else
-  {
-    humid = 35;
-  }
-
-  if (temp < 50)
-  {
-    temp +=1;
-  }
-  else
-  {
-    temp = 10;
-  }
+  temp = calibra_LM();
+  humid = calibra_DHT();
 
   RGB_color(1, calcR(true, temp, false, humid), calcG(true, temp, false, humid), calcB(true, temp, false, humid));
   RGB_color(2, calcR(false, temp, true, humid), calcG(false, temp, true, humid), calcB(false, temp, true, humid));
