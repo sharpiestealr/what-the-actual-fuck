@@ -5,7 +5,7 @@
     <ProjectGuid>ba3051e6-941a-4929-91b7-8b06a18e7fc0</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>super secret calculator.py</StartupFile>
+    <StartupFile>draft league pokelist.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -24,9 +24,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="acionamentos.py" />
+    <Compile Include="draft league pokelist.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ex5.py" />
+    <Compile Include="snell-descartes.py" />
     <Compile Include="super secret calculator.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="teste de mesa.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
